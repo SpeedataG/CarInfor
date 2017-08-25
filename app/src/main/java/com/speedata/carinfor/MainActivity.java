@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.speedata.carinfor.application.CustomerApplication;
+import com.speedata.carinfor.base.BaseActivity;
 import com.speedata.carinfor.db.bean.BaseInfor;
 import com.speedata.carinfor.db.dao.BaseInforDao;
 import com.speedata.utils.ProgressDialogUtils;
@@ -19,7 +20,7 @@ import com.speedata.utils.ProgressDialogUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity implements View.OnClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private AlertDialog mDialog;
     private Context mContext;
@@ -39,6 +40,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
 
         initView();
+        initTitle("永银安华",false,null);
     }
 
     private void initView() {
@@ -46,7 +48,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         baseInforDao = new BaseInforDao(mContext);
         findViewById(R.id.iv_write).setOnClickListener(this);
         findViewById(R.id.iv_check).setOnClickListener(this);
-        findViewById(R.id.btn_import).setOnClickListener(this); //原导入导出按钮
+//        findViewById(R.id.btn_import).setOnClickListener(this); //原导入导出按钮
         findViewById(R.id.btn_clear).setOnClickListener(this); //原导入导出按钮
         baseInfor = new BaseInfor();
         mlist = new ArrayList<>();

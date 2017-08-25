@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -21,18 +22,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.speedata.carinfor.application.CustomerApplication;
+import com.speedata.carinfor.base.BaseActivity;
 import com.speedata.carinfor.db.bean.BaseInfor;
 import com.speedata.carinfor.db.dao.BaseInforDao;
 import com.speedata.carinfor.dialog.SearchTagDialog;
 import com.speedata.carinfor.interfaces.DialogListener;
 import com.speedata.carinfor.utils.MyDateAndTime;
+import com.speedata.carinfor.utils.SoundPlayUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.speedata.carinfor.application.CustomerApplication.iuhfService;
 
-public class InforActivity extends Activity implements View.OnClickListener, DialogListener {
+public class InforActivity extends BaseActivity implements View.OnClickListener, DialogListener {
 
     private Button btnSearch; //寻卡选卡
     private Button btnInput; //录入内容
@@ -71,33 +74,24 @@ public class InforActivity extends Activity implements View.OnClickListener, Dia
 
     //输入法管理器
     protected InputMethodManager mimm = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //去除标题栏
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_infor);
         initTitle();
         initView();
+
     }
 
     private void initTitle() {
-        setNavigation(1, getString(R.string.one_title));
-    }
-
-    /**
-     * 这是导航
-     *
-     * @param left  左侧图标
-     * @param title 标题
-     */
-    protected void setNavigation(int left, String title) {
-        mBarTitle = (TextView) findViewById(R.id.tv_bar_title);
-        mBarLeft = (ImageView) findViewById(R.id.iv_left);
-        if (!TextUtils.isEmpty(title)) {
-            mBarTitle.setText(title);
-        }
-        mBarLeft.setVisibility(left == 0 ? View.GONE : View.VISIBLE);
+        initTitle("信息录入", true, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
 
@@ -122,7 +116,6 @@ public class InforActivity extends Activity implements View.OnClickListener, Dia
 
         btnSearch.setOnClickListener(this);
         btnInput.setOnClickListener(this);
-        mBarLeft.setOnClickListener(this);
 
         application = (CustomerApplication) getApplication();
 
@@ -167,6 +160,7 @@ public class InforActivity extends Activity implements View.OnClickListener, Dia
 
 
                     }
+
                     @Override
                     public void onNothingSelected(AdapterView<?> arg0) {
                     }
@@ -198,6 +192,7 @@ public class InforActivity extends Activity implements View.OnClickListener, Dia
 
 
                     }
+
                     @Override
                     public void onNothingSelected(AdapterView<?> arg0) {
                     }
@@ -235,7 +230,7 @@ public class InforActivity extends Activity implements View.OnClickListener, Dia
                 searchTag.setTitle("选卡");
                 searchTag.setOnSettingListener(this);
                 searchTag.show();
-
+//                readCard();
                 break;
 
             case R.id.btn_input:
@@ -244,9 +239,20 @@ public class InforActivity extends Activity implements View.OnClickListener, Dia
 
                 break;
 
-            case R.id.iv_left:
-                finish();
-                break;
+        }
+    }
+
+    /**
+     * 读卡
+     */
+    private void readCard() {
+        String read = iuhfService.read_area(1, "2", "6", "00000000");
+        if (read.length() == 6) {
+            Snackbar.make(etCardEPC, "读卡失败", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        } else {
+            etCardEPC.setText(read);
+            SoundPlayUtils.getIntance().play();
         }
     }
 
@@ -318,6 +324,7 @@ public class InforActivity extends Activity implements View.OnClickListener, Dia
         // TODO Auto-generated method stub
         etCardEPC.setText(name);
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // 判断是否按下“BACK”(返回)键

@@ -13,7 +13,7 @@
         android:layout_marginLeft="@dimen/dp15"
         android:layout_marginStart="@dimen/dp15"
         android:contentDescription="@string/desc"
-        android:rotation="180"
+        android:rotation="0"
         android:src="@mipmap/right"
         />
 

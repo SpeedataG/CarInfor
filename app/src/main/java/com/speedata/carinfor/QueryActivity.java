@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.speedata.carinfor.adapter.WriteAdapter;
 import com.speedata.carinfor.application.CustomerApplication;
+import com.speedata.carinfor.base.BaseActivity;
 import com.speedata.carinfor.db.bean.BaseInfor;
 import com.speedata.carinfor.db.dao.BaseInforDao;
 import com.speedata.carinfor.dialog.SearchTagDialog;
@@ -45,7 +46,7 @@ import win.reginer.adapter.CommonRvAdapter;
 
 import static com.speedata.carinfor.application.CustomerApplication.iuhfService;
 
-public class QueryActivity extends Activity implements View.OnClickListener, DialogListener, CommonRvAdapter.OnItemClickListener {
+public class QueryActivity extends BaseActivity implements View.OnClickListener, DialogListener, CommonRvAdapter.OnItemClickListener {
     private Button btnSearch; //寻卡选卡
     private Button btnBrandSearch; //查询品牌
     private Button btnInput; //录入内容
@@ -60,7 +61,6 @@ public class QueryActivity extends Activity implements View.OnClickListener, Dia
     private BaseInforDao baseInforDao;
     private Context mContext;
     protected TextView mBarTitle;
-    protected ImageView mBarLeft;
     private AlertDialog mExitDialog; //按退出时弹出对话框
 
     private WriteAdapter mAdapter;
@@ -82,7 +82,7 @@ public class QueryActivity extends Activity implements View.OnClickListener, Dia
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //去除标题栏
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_query);
         initTitle();
         initView();
@@ -91,23 +91,15 @@ public class QueryActivity extends Activity implements View.OnClickListener, Dia
 
 
     private void initTitle() {
-        setNavigation(1, getString(R.string.count_title));
+//        setNavigation(1, getString(R.string.count_title));
+        initTitle(getString(R.string.count_title), true, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
-    /**
-     * 这是导航
-     *
-     * @param left  左侧图标
-     * @param title 标题
-     */
-    protected void setNavigation(int left, String title) {
-        mBarTitle = (TextView) findViewById(R.id.tv_bar_title);
-        mBarLeft = (ImageView) findViewById(R.id.iv_left);
-        if (!TextUtils.isEmpty(title)) {
-            mBarTitle.setText(title);
-        }
-        mBarLeft.setVisibility(left == 0 ? View.GONE : View.VISIBLE);
-    }
 
     private void initView() {
         //输入法管理
@@ -124,7 +116,6 @@ public class QueryActivity extends Activity implements View.OnClickListener, Dia
         btnSearch.setOnClickListener(this);
         btnBrandSearch.setOnClickListener(this);
         btnInput.setOnClickListener(this);
-        mBarLeft.setOnClickListener(this);
 
         application = (CustomerApplication) getApplication();
 

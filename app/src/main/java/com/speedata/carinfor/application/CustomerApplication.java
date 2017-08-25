@@ -31,15 +31,18 @@ public class CustomerApplication extends Application {
     private static CustomerApplication sInstance;
 
     private String EPC;
+
     @Override
     public void onCreate() {
         super.onCreate();
         sInstance = this;
         iuhfService = UHFManager.getUHFService(this);
-        if (iuhfService.OpenDev() == 0) {
-            Toast.makeText(this, "上电成功", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "上电失败", Toast.LENGTH_SHORT).show();
+        if (iuhfService != null) {
+            if (iuhfService.OpenDev() == 0) {
+                Toast.makeText(this, "上电成功", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "上电失败", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -54,6 +57,7 @@ public class CustomerApplication extends Application {
     public int getChangeuser() {
         return changeuser;
     }
+
     public void setChangeuser(int num) {
         this.changeuser = num;
     }
@@ -67,9 +71,11 @@ public class CustomerApplication extends Application {
         this.mID = id;
 
     }
+
     public void setPswd(String pswd) {
         this.pswd = pswd;
     }
+
     public String getPswd() {
         return pswd;
     }
@@ -77,21 +83,24 @@ public class CustomerApplication extends Application {
     public void setTxtName(String txtName) {
         this.txtName = txtName;
     }
+
     public String getTxtName() {
         return txtName;
     }
+
     public void setCheckTime(String checkTime) {
         this.checkTime = checkTime;
     }
+
     public String getCheckTime() {
         return checkTime;
     }
 
 
-
     public int getBposition() {
         return bposition;
     }
+
     public void setBposition(int num) {
         this.bposition = num;
     }
@@ -100,6 +109,7 @@ public class CustomerApplication extends Application {
     public int getAposition() {
         return aposition;
     }
+
     public void setAposition(int num) {
         this.aposition = num;
     }
@@ -107,6 +117,7 @@ public class CustomerApplication extends Application {
     public List<BaseInfor> getList() {
         return list;
     }
+
     public void setList(List<BaseInfor> list1) {
         this.list = list1;
     }
@@ -114,6 +125,7 @@ public class CustomerApplication extends Application {
     public List<BaseInfor> getBaseInfor2() {
         return blist;
     }
+
     public void setBaseInfo2(List<BaseInfor> list1) {
         this.blist = list1;
     }
